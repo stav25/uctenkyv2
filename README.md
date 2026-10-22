@@ -1,28 +1,62 @@
-Uctenky
-Jednoduchy konzolovy nastroj pro tisk uctenky (jako v samoobsluze). Cviceni c. 5, tym 2.
+# Uctenky
 
-Autori: Vaclav Stary, Simon Husar, Marek Bartos, Matus Gondas
+Jednoduchy konzolovy program pro tisk uctenky (jako v samoobsluze). Cviceni c. 5, tym 2.
 
-Aktualni verze: 1.0.0 (semanticke verzovani)
+## Autori
 
-Pozadavky
-Java 17+
-Maven 3.8+ (pro sestaveni)
-Sestaveni a spusteni
-mvn clean package          # zkompiluje, spusti testy, vytvori target/uctenky.jar
+- Vaclav Stary
+- Simon Husar
+- Marek Bartos
+- Matus Gondas
+
+## Verze
+
+Aktualni verze: **1.0.0** (semanticke verzovani `MAJOR.MINOR.PATCH`).
+
+## Pozadavky
+
+- Java 17 nebo novejsi
+- Maven 3.8 nebo novejsi (pro sestaveni)
+
+## Sestaveni a spusteni
+
+```bash
+mvn clean package
 java -jar target/uctenky.jar
-Volby: -c soubor.properties (vlastni konfigurace obchodu), -v verze, -h napoveda.
+```
 
-Jak to funguje
-Opakujici se udaje (nazev, adresa, ICO, DIC, obsluha, paticka, mena, sazba DPH) se nacitaji ze souboru obchod.properties (vzor: src/main/resources/obchod.properties; bez nej se pouzije kopie vestavena v jaru, vlastni soubor lze zadat pres -c).
-Polozky nakupu se zadavaji z prikazove radky, jedna na radek ve tvaru nazev;mnozstvi;cena (desetinna carka i tecka). Prazdny radek ukonci zadavani a vytiskne se uctenka.
-Priklad:
+`mvn clean package` program zkompiluje, spusti testy a vytvori spustitelny soubor `target/uctenky.jar`.
 
-printf 'Rohlik;5;2,50\nMleko;2;24.90\n\n' | java -jar target/uctenky.jar
-Vytvoreni dalsi verze
-V pom.xml zmente <version> (napr. 1.0.0 -> 1.1.0; patch = oprava, minor = nova funkce, major = nekompatibilni zmena).
-mvn clean package - testy musi projit.
-Commit, tag a push: git tag v1.1.0 && git push --tags.
-Na GitHubu vytvorte Release a pripojte target/uctenky.jar.
-Testy
+## Jak program funguje
+
+- **Opakujici se udaje** (nazev obchodu, adresa, ICO, DIC, obsluha, paticka, mena, sazba DPH) se nacitaji
+  ze souboru `src/main/resources/obchod.properties`. Po zmene tohoto souboru je potreba znovu spustit
+  `mvn clean package`.
+- **Polozky nakupu** se zadavaji z prikazove radky. Program se postupne pta na nazev, mnozstvi a cenu za kus
+  (kazdy udaj potvrdte klavesou Enter, desetinna carka i tecka jsou povoleny). Prazdny nazev ukonci zadavani
+  a program vytiskne uctenku.
+
+Ukazka vstupu bez rucniho psani:
+
+```bash
+printf 'Rohlik\n5\n2,50\nMleko\n2\n24.90\n\n' | java -jar target/uctenky.jar
+```
+
+## Jak vytvorit dalsi verzi
+
+1. Zvolte cislo nove verze podle pravidel semantickeho verzovani: oprava chyby zvysuje PATCH (`1.0.0` -> `1.0.1`),
+   nova funkce MINOR (`1.0.0` -> `1.1.0`), nekompatibilni zmena MAJOR (`1.0.0` -> `2.0.0`).
+2. Zmente cislo verze na **dvou mistech**:
+   - v `pom.xml` v elementu `<version>` projektu,
+   - v `src/main/java/cz/uctenky/Main.java` v konstante `VERZE` (a v testu `MainTest`, ktery ji kontroluje).
+3. Spustte `mvn clean package`. Vsechny testy musi projit a vznikne `target/uctenky.jar`.
+4. Zmeny commitnete a pushnete, pak vytvorte tag: `git tag v1.1.0 && git push --tags`.
+5. Na GitHubu vytvorte Release k tomuto tagu a pripojte soubor `target/uctenky.jar`.
+
+## Testy
+
+```bash
 mvn test
+```
+
+Testy (JUnit 5) pokryvaji tridy `Polozka`, `Obchod`, `Uctenka` a nacitani polozek v `Main`.
