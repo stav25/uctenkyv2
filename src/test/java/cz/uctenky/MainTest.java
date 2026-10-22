@@ -31,6 +31,6 @@ class MainTest {
 
     @Test
     void verzeJeNastavena() {
-        assertEquals("1.0.0", Main.VERZE);
+        assertEquals("1.0.1", Main.VERZE);
     }
 }

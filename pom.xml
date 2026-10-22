@@ -6,7 +6,7 @@
 
     <groupId>cz.uctenky</groupId>
     <artifactId>uctenky</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>Uctenky</name>
     <description>Jednoduchy nastroj pro tisk uctenky</description>
